@@ -1,0 +1,85 @@
+name: Update 100 Days Progress
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update-progress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Calculate and update progress
+        shell: bash
+        run: |
+          DAYS=$(find . -maxdepth 1 -type d -name 'Day[0-9][0-9][0-9]' | wc -l | tr -d ' ')
+          PERCENT=$DAYS
+
+          FILLED=$((DAYS * 20 / 100))
+          EMPTY=$((20 - FILLED))
+
+          BAR=""
+
+          for ((i=0; i<FILLED; i++)); do
+            BAR="${BAR}█"
+          done
+
+          for ((i=0; i<EMPTY; i++)); do
+            BAR="${BAR}░"
+          done
+
+          if [ "$DAYS" -ge 100 ]; then
+            STATUS="**100 / 100 Days Completed 🎉**"
+          else
+            STATUS="**${DAYS} / 100 Days Completed 🚀**"
+          fi
+
+          NEW_CONTENT="${STATUS}
+
+          \`${BAR}\` **${PERCENT}%**"
+
+          python3 - <<PY
+          from pathlib import Path
+
+          path = Path("README.md")
+          text = path.read_text()
+
+          start = "<!-- PROGRESS-START -->"
+          end = "<!-- PROGRESS-END -->"
+
+          new_content = """$NEW_CONTENT"""
+
+          before = text.split(start)[0]
+          after = text.split(end)[1]
+
+          path.write_text(
+              before
+              + start
+              + "\n"
+              + new_content
+              + "\n"
+              + end
+              + after
+          )
+          PY
+
+      - name: Commit progress update
+        run: |
+          if git diff --quiet README.md; then
+            echo "Progress already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md
+          git commit -m "Update coding challenge progress"
+          git push
