@@ -10,7 +10,6 @@ Solutions to the **UPES 100 Days of Code** coding challenge, implemented in **C*
 `██████████████░░░░░░` **72%**
 <!-- PROGRESS-END -->
 
-> Progress is automatically updated based on the completed `DayXXX` folders.
 
 ## 🧠 Topics
 
