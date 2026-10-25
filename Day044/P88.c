@@ -24,7 +24,7 @@ int main() {
         i++;
     }
 
-    // Remove the newline character left by fgets, if present
+    // Remove the newline character left by fgets (if it's there)
     if (str[i] == '\n') {
         str[i] = '\0';
     } else {
