@@ -5,9 +5,9 @@ Solutions to the **UPES 100 Days of Code** coding challenge, implemented in **C*
 ## 📊 Progress
 
 <!-- PROGRESS-START -->
-**86 / 100 Days Completed 🚀**
+**87 / 100 Days Completed 🚀**
 
-`█████████████████░░░` **86%**
+`█████████████████░░░` **87%**
 <!-- PROGRESS-END -->
 
 
